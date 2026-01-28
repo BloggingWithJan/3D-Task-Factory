@@ -1,3 +1,4 @@
+
 import { useGLTF } from '@react-three/drei'
 
 export function Floor({ position = [0, 0, 0] }) {
@@ -22,10 +23,5 @@ export function Scanner({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
 
 export function BoxSmall({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
   const { scene } = useGLTF('/kenney_conveyor_kit/box-small.glb')
-  return <primitive object={scene.clone()} position={position} rotation={rotation} />
-}
-
-export function Arrow({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
-  const { scene } = useGLTF('/kenney_conveyor_kit/arrow.glb')
   return <primitive object={scene.clone()} position={position} rotation={rotation} />
 }
