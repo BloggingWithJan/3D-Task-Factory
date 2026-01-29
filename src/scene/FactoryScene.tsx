@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei'
-import { Floor, Conveyor, StructureWall, Scanner } from './FactoryModels'
+import { Floor, Conveyor, StructureWall, Scanner, StructureCornerInnerWall, StructureWindowWall, StructureWindowWallWide, StructureDoorway, StructureDoorwayWide } from './FactoryModels'
 import Box, { type TaskData } from '../components/models/Box'
 import TaskForm from './TaskForm'
 import { Arrow } from '../components/models/Arrow'
@@ -67,35 +67,59 @@ export default function FactoryScene() {
           {/* <Scanner position={[0, 0, 0]} /> */}
 
           {/* Structure Walls */}
-          <StructureWall position={[-2, 0, 0]} />
-          <StructureWall position={[-1, 0, 0]} />
-          <StructureWall position={[0, 0, 0]} />
-          <StructureWall position={[1, 0, 0]} />
-          <StructureWall position={[2, 0, 0]} />
+          <StructureWall position={[0, 0, 8]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 9]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureCornerInnerWall position={[0, 0, 10]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWindowWall position={[1, 0, 10]} />
+          <StructureWall position={[2, 0, 10]} />
+          <StructureWall position={[3, 0, 10]} />
+          <StructureWall position={[4, 0, 10]} />
+          <StructureWindowWall position={[5, 0, 10]} />
+          <StructureWall position={[6, 0, 10]} />
+          <StructureWall position={[7, 0, 10]} />
+          <StructureWall position={[8, 0, 10]} />
+          <StructureWindowWall position={[9, 0, 10]} />
+          <StructureCornerInnerWall position={[10, 0, 10]} rotation={[0, Math.PI * 2, 0]} />
+          <StructureWall position={[10, 0, 9]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, 8]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWindowWallWide position={[10, 0, 6.5]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, 5]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureDoorway position={[10, 0, 4]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, 3]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, 2]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, 1]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, 0]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -1]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -2]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWindowWallWide position={[10, 0, -3.5]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -5]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -6]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -7]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -8]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[10, 0, -9]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureCornerInnerWall position={[10, 0, -10]} rotation={[0, Math.PI / 2, 0]} />
+          <StructureWall position={[9, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureWall position={[8, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureWall position={[7, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureWall position={[6, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureWall position={[5, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureWall position={[4, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureDoorwayWide position={[2.5, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureWall position={[1, 0, -10]} rotation={[0, Math.PI, 0]} />
+          <StructureCornerInnerWall position={[0, 0, -10]} rotation={[0, -Math.PI, 0]} />
+          
+
 
           {/* Floor Grid */}
-          <Floor position={[-2, 0, 0]} />
-          <Floor position={[-1, 0, 0]} />
-          <Floor position={[0, 0, 0]} />
-          <Floor position={[1, 0, 0]} />
-          <Floor position={[2, 0, 0]} />
-          <Floor position={[-2, 0, -1]} />
-          <Floor position={[-1, 0, -1]} />
-          <Floor position={[0, 0, -1]} />
-          <Floor position={[1, 0, -1]} />
-          <Floor position={[2, 0, -1]} />
-          <Floor position={[-2, 0, -2]} />
-          <Floor position={[-1, 0, -2]} />
-          <Floor position={[0, 0, -2]} />
-          <Floor position={[1, 0, -2]} />
-          <Floor position={[2, 0, -2]} />
-
-
+          <group scale={[20, 1, 20]} position={[0, 0, 0]}>
+            <Floor position={[0, 0, 0]} />
+          </group>
+          
           {/* Create Button  */}
           <Arrow onClick={() => setIsFormOpen(true)} position={[0, 2, 0]}
             rotation={[Math.PI / 2, Math.PI / 2, 0]} />
 
-          <Robotarm position={[5, 0, 5]} rotation={[0, -Math.PI / 4, 0]} />  
+          <Robotarm position={[5, 0, 5]} rotation={[0, -Math.PI / 4, 0]} />
 
           {/* Task Boxes */}
           {tasks.map((task) => (
