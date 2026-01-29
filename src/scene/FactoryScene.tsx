@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei'
 import { Floor, Conveyor, StructureWall, Scanner } from './FactoryModels'
-import TaskBox, { type TaskData } from './TaskBox'
+import Box, { type TaskData } from '../components/models/Box'
 import TaskForm from './TaskForm'
-import { Arrow } from '../components/Arrow'
-import { Robotarm } from '../components/Robotarm'
+import { Arrow } from '../components/models/Arrow'
+import { Robotarm } from '../components/models/Robotarm'
 
 export default function FactoryScene() {
+
   const [tasks, setTasks] = useState<TaskData[]>([
     {
       id: '001',
@@ -20,10 +21,20 @@ export default function FactoryScene() {
   ])
 
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [selectedTask, setSelectedTask] = useState<TaskData | null>(null)
+  const [newTaskId, setNewTaskId] = useState<string | null>(null)
 
   const handleCreateTask = (newTask: TaskData) => {
     setTasks([...tasks, newTask])
+    setSelectedTask(newTask)
     setIsFormOpen(false)
+    setNewTaskId(newTask.id)
+    setTimeout(() => setNewTaskId(null), 1000)
+  }
+
+  const handleBoxClick = (task: TaskData) => {
+    setSelectedTask(task)
+    setIsFormOpen(true)
   }
 
   return (
@@ -88,18 +99,26 @@ export default function FactoryScene() {
 
           {/* Task Boxes */}
           {tasks.map((task) => (
-            <TaskBox
+            <Box
               key={task.id}
               {...task}
+              onClick={handleBoxClick}
+              isNew={newTaskId === task.id}
             />
           ))}
         </group>
       </Canvas>
 
+      {/* 3D UI Form - Outside Canvas */}
       <TaskForm
         isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
+        onClose={() => {
+          setIsFormOpen(false)
+          setSelectedTask(null)
+        }}
         onSubmit={handleCreateTask}
+        initialData={selectedTask}
+        readOnly={!!selectedTask}
       />
     </>
   )
