@@ -67,6 +67,21 @@ export default function FactoryScene() {
           {/* <Scanner position={[0, 0, 0]} /> */}
 
           {/* Structure Walls */}
+          <StructureWall position={[0, 0, -9]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, -8]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, -7]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, -6]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, -5]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, -4]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, -3]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWindowWallWide position={[0, 0, -1.5]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 0]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 1]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 2]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 3]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWindowWallWide position={[0, 0, 4.5]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 6]} rotation={[0, -Math.PI / 2, 0]} />
+          <StructureWall position={[0, 0, 7]} rotation={[0, -Math.PI / 2, 0]} />
           <StructureWall position={[0, 0, 8]} rotation={[0, -Math.PI / 2, 0]} />
           <StructureWall position={[0, 0, 9]} rotation={[0, -Math.PI / 2, 0]} />
           <StructureCornerInnerWall position={[0, 0, 10]} rotation={[0, -Math.PI / 2, 0]} />
