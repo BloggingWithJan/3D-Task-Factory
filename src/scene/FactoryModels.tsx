@@ -51,3 +51,18 @@ export function BoxSmall({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
   const { scene } = useGLTF('/kenney_conveyor_kit/box-small.glb')
   return <primitive object={scene.clone()} position={position} rotation={rotation} />
 }
+
+export function Hopper({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const { scene } = useGLTF('/kenney_conveyor_kit/cover-stripe-hopper.glb')
+  return <primitive object={scene.clone()} position={position} rotation={rotation} />
+}
+
+export function StructureYellowShort({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const { scene } = useGLTF('/kenney_conveyor_kit/structure-yellow-short.glb')
+  return <primitive object={scene.clone()} position={position} rotation={rotation} />
+}
+
+export function ConveyorBarsStripeSide({ position = [0, 0, 0], rotation = [0, 0, 0] }) {
+  const { scene } = useGLTF('/kenney_conveyor_kit/conveyor-bars-stripe-side.glb')
+  return <primitive object={scene.clone()} position={position} rotation={rotation} />
+}
