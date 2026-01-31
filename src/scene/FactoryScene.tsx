@@ -1,13 +1,46 @@
-import { useState } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { useMemo, useRef, useState, type RefObject } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera, Environment } from '@react-three/drei'
+import { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
+import { Vector3 } from 'three'
 import { Floor, Conveyor, StructureWall, Scanner, StructureCornerInnerWall, StructureWindowWall, StructureWindowWallWide, StructureDoorway, StructureDoorwayWide, Hopper, StructureYellowShort, ConveyorBarsStripeSide } from './FactoryModels'
 import Box, { type TaskData } from '../components/models/Box'
 import TaskForm from './TaskForm'
 import { Arrow } from '../components/models/Arrow'
 import { Robotarm } from '../components/models/Robotarm'
 
+type CameraRigProps = {
+  target: [number, number, number]
+  position: [number, number, number]
+  controlsRef: RefObject<OrbitControlsImpl>
+  active: boolean
+}
+
+function CameraRig({ target, position, controlsRef, active }: CameraRigProps) {
+  const { camera } = useThree()
+  const targetVector = useMemo(() => new Vector3(), [])
+  const positionVector = useMemo(() => new Vector3(), [])
+
+  useFrame(() => {
+    if (!active) return
+    positionVector.set(...position)
+    camera.position.lerp(positionVector, 0.08)
+
+    if (controlsRef.current) {
+      targetVector.set(...target)
+      controlsRef.current.target.lerp(targetVector, 0.08)
+      controlsRef.current.update()
+    }
+  })
+
+  return null
+}
+
 export default function FactoryScene() {
+  const defaultCameraPosition: [number, number, number] = [8, 6, 8]
+  const defaultCameraTarget: [number, number, number] = [0, 0, 0]
+  const hopperTarget: [number, number, number] = [-2.5, 0.5, 8]
+  const hopperCameraPosition: [number, number, number] = [0, 3, 2]
 
   const [tasks, setTasks] = useState<TaskData[]>([
     {
@@ -23,13 +56,16 @@ export default function FactoryScene() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [selectedTask, setSelectedTask] = useState<TaskData | null>(null)
   const [newTaskId, setNewTaskId] = useState<string | null>(null)
+  const [cameraTarget, setCameraTarget] = useState<[number, number, number]>(defaultCameraTarget)
+  const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(defaultCameraPosition)
+  const [isCameraLocked, setIsCameraLocked] = useState(false)
+  const controlsRef = useRef<OrbitControlsImpl>(null)
 
   const handleCreateTask = (newTask: TaskData) => {
     setTasks([...tasks, newTask])
-    setSelectedTask(newTask)
-    setIsFormOpen(false)
     setNewTaskId(newTask.id)
     setTimeout(() => setNewTaskId(null), 1000)
+    handleCloseForm()
   }
 
   const handleBoxClick = (task: TaskData) => {
@@ -37,10 +73,25 @@ export default function FactoryScene() {
     setIsFormOpen(true)
   }
 
+  const handleArrowClick = () => {
+    setIsCameraLocked(true)
+    setCameraTarget(hopperTarget)
+    setCameraPosition(hopperCameraPosition)
+    setTimeout(() => setIsFormOpen(true), 700)
+  }
+
+  const handleCloseForm = () => {
+    setIsFormOpen(false)
+    setSelectedTask(null)
+    setCameraTarget(defaultCameraTarget)
+    setCameraPosition(defaultCameraPosition)
+    setTimeout(() => setIsCameraLocked(false), 700)
+  }
+
   return (
     <>
       <Canvas>
-        <PerspectiveCamera makeDefault position={[8, 6, 8]} />
+        <PerspectiveCamera makeDefault position={defaultCameraPosition} />
 
         {/* Lighting */}
         <ambientLight intensity={0.6} />
@@ -50,7 +101,8 @@ export default function FactoryScene() {
         <Environment preset="warehouse" />
 
         {/* Controls */}
-        <OrbitControls target={[0, 0, 0]} />
+        <OrbitControls ref={controlsRef} target={defaultCameraTarget} enabled={!isCameraLocked} />
+        <CameraRig target={cameraTarget} position={cameraPosition} controlsRef={controlsRef} active={isCameraLocked} />
 
         {/* Factory Scene */}
         <group>
@@ -59,7 +111,7 @@ export default function FactoryScene() {
           <axesHelper args={[5]} />
 
              {/* Create Button  */}
-          <Arrow onClick={() => setIsFormOpen(true)} position={[-2.5, 3, 8]}
+          <Arrow onClick={handleArrowClick} position={[-2.5, 3, 8]}
             rotation={[Math.PI / 2, Math.PI / 2, 0]} />
 
           {/* Conveyor Line */} 
@@ -171,7 +223,7 @@ export default function FactoryScene() {
 
 
           {/* Floor Grid */}
-          <group scale={[20, 1, 20]} position={[0, 0, 0]}>
+          <group scale={[10, 1, 20]} position={[0, 0, 0]}>
             <Floor position={[0, 0, 0]} />
           </group>
                    
@@ -191,10 +243,7 @@ export default function FactoryScene() {
       {/* 3D UI Form - Outside Canvas */}
       <TaskForm
         isOpen={isFormOpen}
-        onClose={() => {
-          setIsFormOpen(false)
-          setSelectedTask(null)
-        }}
+        onClose={handleCloseForm}
         onSubmit={handleCreateTask}
         initialData={selectedTask}
         readOnly={!!selectedTask}
